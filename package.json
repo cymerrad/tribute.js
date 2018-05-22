@@ -1,0 +1,19 @@
+{
+  "name": "tribute.js",
+  "version": "1.0.0",
+  "description": "Automated sending of birthday wishes",
+  "main": "headless.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "puppeteer": "^1.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "me",
+  "license": "ISC"
+}
