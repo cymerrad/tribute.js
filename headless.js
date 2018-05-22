@@ -63,7 +63,7 @@ function checkDirectorySync(directory) {
   checkDirectorySync(screenshotDirNormalized);
 
   var screenLocation = path.format({
-    name: `messenger_${now}`,
+    name: `messenger_${recipientID}_${now}`,
     ext: '.png',
     dir: screenshotDirNormalized,
   });
