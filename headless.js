@@ -19,9 +19,9 @@ const recipientID = '';
  */
 function rfc3339() {
   var date = new Date();
-  var [H, M] = [_.padStart(date.getHours(), 2, '0'), _.padStart(date.getMinutes(), 2, '0')];
+  var [H, M, s] = [_.padStart(date.getHours(), 2, '0'), _.padStart(date.getMinutes(), 2, '0'), _.padStart(date.getSeconds(), 2, '0')];
   var [d, m, y] = [_.padStart(date.getDay(), 2, '0'), _.padStart(date.getMonth(), 2, '0'), date.getFullYear().toString()];
-  return `${y}-${m}-${d}T${H}:${M}`;
+  return `${y}-${m}-${d}T${H}:${M}:${s}`;
 }
 
 /**
