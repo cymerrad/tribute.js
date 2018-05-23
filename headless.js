@@ -5,14 +5,22 @@ const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
 
-var argv = require('minimist')(process.argv.slice(2))
+let argv = require('minimist')(process.argv.slice(2))
 
 try {
-  var settings = {
+  let settings = {
     screenshotDir : argv.dir ? argv.dir : 'screenshots',
     dimensions : argv.size ? ((w,h)=>({width:w, height:h}))(...argv.size.split(',')) : {width: 1366, height: 768},
     username : argv.u ? argv.u : (function(){throw "username is required"}()),
-    password : argv.p ? argv.p : (function(){throw "password is requird"}()),
+    password : argv.p ? argv.p : (async function(){
+      try {
+        let prompt = require('password-prompt'); 
+        let password = await prompt('password: '); 
+        return password;
+      } catch(e) {
+        throw "password-prompt errored out"
+      }
+    }()),
     tributeMessage : argv.m ? argv.m : (function(){throw "message is required"}()),
     recipientID : argv.r ? argv.r : (function(){throw "recipient ID is required"}()),
   }  
@@ -26,9 +34,9 @@ try {
  * @return {!String}
  */
 function rfc3339() {
-  var date = new Date();
-  var [H, M, s] = [_.padStart(date.getHours(), 2, '0'), _.padStart(date.getMinutes(), 2, '0'), _.padStart(date.getSeconds(), 2, '0')];
-  var [d, m, y] = [_.padStart(date.getDay(), 2, '0'), _.padStart(date.getMonth(), 2, '0'), date.getFullYear().toString()];
+  let date = new Date();
+  let [H, M, s] = [_.padStart(date.getHours(), 2, '0'), _.padStart(date.getMinutes(), 2, '0'), _.padStart(date.getSeconds(), 2, '0')];
+  let [d, m, y] = [_.padStart(date.getDay(), 2, '0'), _.padStart(date.getMonth(), 2, '0'), date.getFullYear().toString()];
   return `${y}-${m}-${d}T${H}:${M}:${s}`;
 }
 
@@ -70,12 +78,12 @@ function checkDirectorySync(directory) {
   // Giving some time for message to be sent
   await (async() => new Promise(resolve => setTimeout(resolve, 3000)))();
 
-  var now = rfc3339();
+  let now = rfc3339();
 
-  var screenshotDirNormalized = path.normalize(`./${settings.screenshotDir}`);
+  let screenshotDirNormalized = path.normalize(`./${settings.screenshotDir}`);
   checkDirectorySync(screenshotDirNormalized);
 
-  var screenLocation = path.format({
+  let screenLocation = path.format({
     name: `messenger_${settings.recipientID}_${now}`,
     ext: '.png',
     dir: screenshotDirNormalized,
