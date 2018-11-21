@@ -2,19 +2,34 @@
   "name": "tribute.js",
   "version": "1.0.0",
   "description": "Automated sending of birthday wishes",
-  "main": "headless.js",
+  "main": "lib/index",
+  "types": "lib/index",
   "directories": {
     "example": "examples"
   },
   "dependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/dotenv": "^6.1.0",
+    "@types/express": "^4.16.0",
+    "@types/minimist": "^1.2.0",
     "@types/puppeteer": "^1.10.0",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
     "lodash": "^4.17.10",
     "minimist": "^1.2.0",
     "password-prompt": "^1.0.6",
-    "puppeteer": "^1.4.0"
+    "puppeteer": "^1.4.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
   },
   "devDependencies": {},
   "scripts": {
+    "start": "yarn build && yarn serve",
+    "serve": "node lib/index.js",
+    "build": "yarn run tsc",
+    "watch": "yarn run tsc -- -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "me",
