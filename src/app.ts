@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import lusca from "lusca";
 import dotenv from "dotenv";
 import flash from "express-flash";
+import session from "express-session";
 import path from "path";
 import expressValidator from "express-validator";
 import bluebird from "bluebird";
@@ -26,6 +27,12 @@ app.set("view engine", "pug");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
+app.use(session({
+  cookie: { secure: false },
+  secret: "memes",
+  resave: true,
+  saveUninitialized: false,
+}));
 app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));

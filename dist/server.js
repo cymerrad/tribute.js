@@ -28,6 +28,8 @@ const server = app_1.default.listen(app_1.default.get("port"), () => __awaiter(t
     const settings = new settings_1.default();
     browser = yield puppeteer_1.default.launch(settings.launchOptions());
     const page = yield browser.newPage();
+    yield page.setViewport(settings.viewport);
+    yield page.goto(`http://localhost:${app_1.default.get("port")}`, { waitUntil: "networkidle2" });
     console.log("  Press CTRL-C to stop\n");
 }));
 exports.default = server;

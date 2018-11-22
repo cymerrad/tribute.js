@@ -27,6 +27,8 @@ const server = app.listen(app.get("port"), async () => {
   browser = await puppeteer.launch(settings.launchOptions());
   const page = await browser.newPage();
   await page.setViewport(settings.viewport);
+  await page.goto(`http://localhost:${app.get("port")}`, { waitUntil: "networkidle2" });
+
 
   console.log("  Press CTRL-C to stop\n");
 });
