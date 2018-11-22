@@ -15,6 +15,7 @@ dotenv.config({ path: ".env" });
 import * as homeController from "./controllers/home";
 import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
+import * as tributeController from "./controllers/tribute";
 
 // Create Express server
 const app = express();
@@ -45,6 +46,7 @@ app.use(
  * Primary app routes.
  */
 app.get("/", homeController.index);
+app.post("/", tributeController.postTribute);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
 
