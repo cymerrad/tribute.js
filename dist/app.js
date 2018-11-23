@@ -22,8 +22,8 @@ const express_validator_1 = __importDefault(require("express-validator"));
 dotenv_1.default.config({ path: ".env" });
 // Controllers (route handlers)
 const homeController = __importStar(require("./controllers/home"));
-const apiController = __importStar(require("./controllers/api"));
 const contactController = __importStar(require("./controllers/contact"));
+const tributeController = __importStar(require("./controllers/tribute"));
 // Create Express server
 const app = express_1.default();
 // Express configuration
@@ -47,11 +47,8 @@ app.use(express_1.default.static(path_1.default.join(__dirname, "public"), { max
  * Primary app routes.
  */
 app.get("/", homeController.index);
+app.post("/", tributeController.postTribute);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
-/**
- * API examples routes.
- */
-app.get("/api", apiController.getApi);
 exports.default = app;
 //# sourceMappingURL=app.js.map

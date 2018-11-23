@@ -6,14 +6,12 @@ import flash from "express-flash";
 import session from "express-session";
 import path from "path";
 import expressValidator from "express-validator";
-import bluebird from "bluebird";
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: ".env" });
 
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
-import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
 import * as tributeController from "./controllers/tribute";
 
@@ -49,10 +47,5 @@ app.get("/", homeController.index);
 app.post("/", tributeController.postTribute);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
-
-/**
- * API examples routes.
- */
-app.get("/api", apiController.getApi);
 
 export default app;
