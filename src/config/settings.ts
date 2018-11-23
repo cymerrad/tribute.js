@@ -28,6 +28,7 @@ function getBool(option: string, fallback: boolean): boolean {
 class Settings {
   debug: boolean;
   viewport: Viewport;
+  screenshotDir: string;
 
   constructor() {
 
@@ -36,6 +37,7 @@ class Settings {
       height: getInt("height", 768),
       width: getInt("width", 1366),
     } as Viewport;
+    this.screenshotDir = getOpt("SCREENSHOTS", "static");
 
     logger.debug("Loaded %s", JSON.stringify(this));
   }
@@ -45,6 +47,10 @@ class Settings {
       headless: !this.debug,
       defaultViewport: this.debug ? undefined : this.viewport,
     } as LaunchOptions;
+  }
+
+  launchOptionsEmergency(): LaunchOptions {
+    return Object.assign(this.launchOptions(), { args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   }
 }
 

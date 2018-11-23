@@ -14,10 +14,11 @@ dotenv.config({ path: ".env" });
 import * as homeController from "./controllers/home";
 import * as contactController from "./controllers/contact";
 import * as tributeController from "./controllers/tribute";
+import Settings from "./config/settings";
 
 // Create Express server
 const app = express();
-
+const settings = new Settings();
 
 // Express configuration
 app.set("port", process.env.PORT || 8000);
@@ -38,6 +39,11 @@ app.use(lusca.xssProtection(true));
 
 app.use(
   express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
+);
+
+app.set("screenshots", settings.screenshotDir);
+app.use(
+  express.static(path.join(__dirname, settings.screenshotDir), { maxAge: 31557600000 })
 );
 
 /**

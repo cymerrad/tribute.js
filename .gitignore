@@ -1,6 +1,8 @@
+dist
 local
 node_modules
 screenshots
+static
 *swp
 .count
 *log
