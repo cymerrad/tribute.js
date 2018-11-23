@@ -28,6 +28,8 @@ async function sleep(ms: number) {
 const FORGOTTEN_PASS_TEXT = "Forgotten password";
 const forgotten_re = new RegExp(FORGOTTEN_PASS_TEXT);
 
+const APP_JSON = "application/json";
+
 /**
  * Post /
  * Execute a tribute.
@@ -40,12 +42,14 @@ export let postTribute = (req: Request, res: Response) => {
 
   const errors = req.validationErrors();
 
+  // 'smart' output depending on JSON/simple-POST... clunky :/
+  const sent_with_json = req.headers["content-type"] && req.headers["content-type"]!.toLowerCase() === APP_JSON;
+
   if (errors) {
     req.flash("errors", errors);
 
-    const appJSON = "application/json";
-    if (req.headers["content-type"] && req.headers["content-type"]!.toLowerCase() === appJSON) {
-      res.setHeader("content-type", appJSON);
+    if (sent_with_json) {
+      res.setHeader("content-type", APP_JSON);
       return res.send(JSON.stringify({ errors: errors }));
     }
 
