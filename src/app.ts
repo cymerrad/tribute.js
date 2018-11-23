@@ -42,9 +42,6 @@ app.use(
 );
 
 app.set("screenshots", settings.screenshotDir);
-app.use(
-  express.static(path.join(__dirname, settings.screenshotDir), { maxAge: 31557600000 })
-);
 
 /**
  * Primary app routes.

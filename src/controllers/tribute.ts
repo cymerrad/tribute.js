@@ -42,6 +42,13 @@ export let postTribute = (req: Request, res: Response) => {
 
   if (errors) {
     req.flash("errors", errors);
+
+    const appJSON = "application/json";
+    if (req.headers["content-type"] && req.headers["content-type"]!.toLowerCase() === appJSON) {
+      res.setHeader("content-type", appJSON);
+      return res.send(JSON.stringify({ errors: errors }));
+    }
+
     return res.redirect("/");
   }
 
