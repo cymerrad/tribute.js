@@ -22,7 +22,8 @@ class BrowserHandler {
   }
 
   init = async () => {
-    this.browser = await puppeteer.launch(this.settings.launchOptions());
+    // this is going to be deployed on Manjaro
+    this.browser = await puppeteer.launch(this.settings.launchOptionsEmergency());
     this.ready = true;
   }
 
