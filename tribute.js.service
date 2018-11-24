@@ -6,7 +6,7 @@ After=network.target
 ExecStart=/home/radek/Documents/node/tribute.js/server.sh
 Restart=always
 User=radek
-Group=group
+Group=radek
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
 WorkingDirectory=/home/radek/Documents/node/tribute.js
