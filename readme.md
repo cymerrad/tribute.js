@@ -1,12 +1,8 @@
 # tribute.js
 ## What is it?
-It's a another small utility I direly need in my life.  
-I will try to make it a fully autonomous tool for ~~spamming~~ sending messages on fb's messenger.
-
-## TODO
-1. crontab
-1. nice and secure way to pass in credentials
-1. installation/packaging
+It's a small utility I direly need in my life.  
+This is a fully autonomous tool for ~~spamming~~ sending messages on fb's messenger.
+In its current (daemonized) form I could use it as a control on my home server.
 
 ## Notes
 Remember to update the systemd daemon after every change to the .service file
