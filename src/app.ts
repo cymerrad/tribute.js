@@ -14,6 +14,7 @@ dotenv.config({ path: ".env" });
 import * as homeController from "./controllers/home";
 import * as contactController from "./controllers/contact";
 import * as tributeController from "./controllers/tribute";
+import * as browserController from "./controllers/browser";
 import Settings from "./config/settings";
 
 // Create Express server
@@ -50,5 +51,7 @@ app.get("/", homeController.index);
 app.post("/", tributeController.postTribute);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
+app.get("/page/:sessionId", browserController.getPage);
+app.get("/page/:sessionId", browserController.postPage);
 
 export default app;
