@@ -1,5 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 file_dir=$(dirname $(realpath $0))
 cd $file_dir
 
-node ./dist/server.js $@
+#log_loc=/var/log/tribute.js.log
+#touch $log_loc
+
+/usr/bin/node ./dist/server.js
