@@ -6,7 +6,7 @@ import fs from "fs";
 import assert from "assert";
 import Settings from "../config/settings";
 import logger from "../util/logger";
-import { awaitExpression, assertAnyTypeAnnotation } from "babel-types";
+import { Page } from "puppeteer";
 
 const settings = new Settings();
 
@@ -19,6 +19,25 @@ function checkDirectorySync(directory: string) {
   } catch (e) {
     fs.mkdirSync(directory);
   }
+}
+
+async function takeScreenshot(page: Page, fb_id: string, subDir?: string) {
+  
+  const now = rfc3339();
+  
+  const screenshotDir = subDir ? `./${settings.screenshotDir}/${subDir}` : `./${settings.screenshotDir}`;
+  const screenshotDirNormalized = path.normalize(screenshotDir);
+  checkDirectorySync(screenshotDirNormalized);
+
+  const screenLocation = path.format({
+    name: `messenger_${fb_id}_${now}`,
+    ext: ".png",
+    dir: screenshotDirNormalized,
+  });
+
+  // Saving
+  logger.debug(`Saving to ${screenLocation}`);
+  await page.screenshot({ path: screenLocation });
 }
 
 async function sleep(ms: number) {
@@ -34,7 +53,7 @@ const APP_JSON = "application/json";
  * Post /
  * Execute a tribute.
  */
-export let postTribute = (req: Request, res: Response) => {
+export function postTribute(req: Request, res: Response) {
   req.assert("fb_id", "FB id cannot be blank").notEmpty();
   req.assert("tribute_body", "Message cannot be blank").notEmpty();
   req.assert("email", "Email is not valid").isEmail();
@@ -76,6 +95,7 @@ export let postTribute = (req: Request, res: Response) => {
       } catch (err) {
         // We are possibly already logged in?
         loggedIn = true;
+        await takeScreenshot(page, fb_id, "possible_logged_in");
       }
 
       if (!loggedIn) {
@@ -92,7 +112,8 @@ export let postTribute = (req: Request, res: Response) => {
         const found = (await page.content()).match(forgotten_re);
         if (found) {
           req.flash("errors", { msg: "Invalid password" });
-          return res.redirect("/");
+          res.status(400).send("Invalid password");
+          return await page.close();
         }
       }
       await page.click(pageBody);
@@ -100,31 +121,22 @@ export let postTribute = (req: Request, res: Response) => {
       // Type in message and send with "enter"
       await page.type(pageBody, `${tribute_body}`);
       await page.type(pageBody, "\n");
+      await page.type(pageBody, String.fromCharCode(13));
 
       // Giving some time for message to be sent
       await sleep(3000);
 
-      const now = rfc3339();
-      const screenshotDirNormalized = path.normalize(`./${settings.screenshotDir}`);
-      checkDirectorySync(screenshotDirNormalized);
-
-      const screenLocation = path.format({
-        name: `messenger_${fb_id}_${now}`,
-        ext: ".png",
-        dir: screenshotDirNormalized,
-      });
-
-      // Saving
-      logger.debug(`Saving to ${screenLocation}`);
-      await page.screenshot({ path: screenLocation });
+      await takeScreenshot(page, fb_id);
 
       await page.close();
 
       req.flash("success", { msg: "Tribute has been paid successfully!" });
-      res.redirect("/");
+      // res.redirect("/");
+      res.sendStatus(200);
     })
     .catch(err => {
       req.flash("errors", err);
-      return res.redirect("/");
+      // return res.redirect("/");
+      res.status(500).send(err);
     });
 };
