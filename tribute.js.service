@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 ExecStart=/home/radek/Documents/node/tribute.js/server.sh
+KillMode=control-group
 Restart=always
 User=radek
 Group=radek
